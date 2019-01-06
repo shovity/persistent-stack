@@ -49,5 +49,13 @@ services:
         networks:
             - common
 
+    kibana:
+        image: docker.elastic.co/kibana/kibana:6.5.4
+        container_name: persistent_kibana
+        ports:
+            - 5601:5601
+        networks:
+            - common
+
 networks:
     common:
