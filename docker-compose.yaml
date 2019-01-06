@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
     mongo:
@@ -26,13 +26,28 @@ services:
             - common
         restart: always
 
-    redis_c:
-        container_name: persistent_redis_c
-        image: redis:alpine
-        command: ["redis-server", "--appendonly", "yes"]
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+        container_name: persistent_elasticsearch
+        environment:
+            # single node for develop
+            -  discovery.type=single-node
+
+            # must set vm.max_map_count least 262144 in production
+            # - cluster.name=docker-cluster
+            # - bootstrap.memory_lock=true
+            # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - ./data/elasticsearch:/usr/share/elasticsearch/data
+        user: "${UID_GID}"
+        ports:
+            - 9200:9200
         networks:
             - common
-        restart: always
 
 networks:
     common:
