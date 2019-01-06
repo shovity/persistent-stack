@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+    mongo:
+        container_name: persistent_mongo
+        image: mongo:latest
+        volumes:
+            - ./data/mongo:/data/db
+        user: "${UID_GID}"
+        ports:
+            - "27017:27017"
+        networks:
+            - common
+        restart: always
+
+    redis:
+        container_name: persistent_redis
+        image: redis:alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - ./data/redis:/data
+        user: "${UID_GID}"
+        ports:
+            - "6379:6379"
+        networks:
+            - common
+        restart: always
+
+    redis_c:
+        container_name: persistent_redis_c
+        image: redis:alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        networks:
+            - common
+        restart: always
+
+networks:
+    common:
