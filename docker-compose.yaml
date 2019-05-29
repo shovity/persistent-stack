@@ -6,7 +6,7 @@ services:
         image: mongo:latest
         volumes:
             - ./data/mongo:/data/db
-        user: "${UID_GID}"
+        # user: "${UID_GID}"
         ports:
             - "27017:27017"
         networks:
@@ -19,7 +19,7 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-        user: "${UID_GID}"
+        # user: "${UID_GID}"
         ports:
             - "6379:6379"
         networks:
@@ -43,7 +43,7 @@ services:
                 hard: -1
         volumes:
             - ./data/elasticsearch:/usr/share/elasticsearch/data
-        user: "${UID_GID}"
+        # user: "${UID_GID}"
         ports:
             - 9200:9200
         networks:
