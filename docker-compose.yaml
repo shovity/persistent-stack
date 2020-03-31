@@ -57,5 +57,21 @@ services:
         networks:
             - common
 
+    mysql:
+        image: mariadb:10.4
+        container_name: mysql
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+            # - ./data/config/mysql/my.cnf:/etc/mysql/my.cnf
+        # user: "${UID_GID}"
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: ''
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        networks:
+            - common
+        restart: always
+
 networks:
     common:
