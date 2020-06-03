@@ -2,11 +2,9 @@ version: '3'
 
 services:
     mongo:
-        container_name: persistent_mongo
         image: mongo:latest
         volumes:
             - ./data/mongo:/data/db
-        # user: "${UID_GID}"
         ports:
             - "27017:27017"
         networks:
@@ -14,12 +12,10 @@ services:
         restart: always
 
     redis:
-        container_name: persistent_redis
         image: redis:alpine
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-        # user: "${UID_GID}"
         ports:
             - "6379:6379"
         networks:
@@ -28,22 +24,14 @@ services:
 
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
-        container_name: persistent_elasticsearch
         environment:
-            # single node for develop
             -  discovery.type=single-node
-
-            # must set vm.max_map_count least 262144 in production
-            # - cluster.name=docker-cluster
-            # - bootstrap.memory_lock=true
-            # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         ulimits:
             memlock:
                 soft: -1
                 hard: -1
         volumes:
             - ./data/elasticsearch:/usr/share/elasticsearch/data
-        # user: "${UID_GID}"
         ports:
             - 9200:9200
         networks:
@@ -58,17 +46,13 @@ services:
             - common
 
     mysql:
-        image: mariadb:10.4
-        container_name: mysql
+        image: mysql
         volumes:
             - ./data/mysql:/var/lib/mysql
-            # - ./data/config/mysql/my.cnf:/etc/mysql/my.cnf
-        # user: "${UID_GID}"
         ports:
             - 3306:3306
         environment:
-            MYSQL_ROOT_PASSWORD: ''
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_ROOT_PASSWORD: 'toor'
         networks:
             - common
         restart: always
